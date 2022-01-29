@@ -1,0 +1,31 @@
+{
+  "name": "digitalrepublic_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js",
+    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guicouto90/digitalrepublic_backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guicouto90/digitalrepublic_backend/issues"
+  },
+  "homepage": "https://github.com/guicouto90/digitalrepublic_backend#readme",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "express": "^4.17.2",
+    "mongodb": "^4.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.8.0",
+    "nodemon": "^2.0.15"
+  }
+}
