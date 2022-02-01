@@ -173,8 +173,8 @@ describe('POST /accounts', () => {
   describe('When the field "cpf" has already been registered for another account', () => {
     let response;
     before(async ()=> {
-      const customersCollection = connectionMock.db('DigitalRepublic').collection('accounts');
-      await customersCollection.insertOne({
+      const accountsCollection = connectionMock.db('DigitalRepublic').collection('accounts');
+      await accountsCollection.insertOne({
         name: 'Roberto',
         lastName: 'da Silva',
         cpf: 12345678910,
@@ -237,7 +237,6 @@ describe('POST /accounts', () => {
       expect(response.body.message).to.be.equals("Invalid cpf number");
     });
   });
-
 
   describe('When the field "cpf" is empty', () => {
     let response;
@@ -349,7 +348,6 @@ describe('POST /accounts', () => {
     });
 
     it('return a property "accountNumber", "_id", "fullName", "cpf" and "balance" in the body', () => {
-      console.log(response.body);
       expect(response.body).to.have.property('accountNumber');
       expect(response.body).to.have.property('_id')
       expect(response.body).to.have.property('fullName')
@@ -357,4 +355,48 @@ describe('POST /accounts', () => {
       expect(response.body).to.have.property('balance')
     });
   });
-})
+});
+
+describe('GET /accounts', () => {
+  let connectionMock;
+
+  before(async () => {
+    connectionMock = await getConnection();
+    sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+  });
+
+  after(() => {
+    MongoClient.connect.restore();
+  });
+
+  describe('Get all the registered accounts', () => {
+    let response;
+    before(async ()=> {
+      const accountsCollection = connectionMock.db('DigitalRepublic').collection('accounts');
+      await accountsCollection.insertOne({
+        accountNumber: 12356,
+        fullName: 'Roberto da Silva',
+        cpf: 12345678910,
+        balance: 500
+      });
+      response = await chai.request(server)
+        .get('/accounts')
+    });
+
+    it('Return status 200', () => {
+      expect(response).to.have.status(200);
+    });
+
+    it('Return an array in the body', () => {
+      expect(response.body).to.be.an('array');
+    });
+
+    it('return a property "accountNumber", "_id", "fullName", "cpf" and "balance" in the body', () => {
+      expect(response.body[2]).to.have.property('accountNumber');
+      expect(response.body[2]).to.have.property('_id')
+      expect(response.body[2]).to.have.property('fullName')
+      expect(response.body[2]).to.have.property('cpf')
+      expect(response.body[2]).to.have.property('balance')
+    });
+  });
+});

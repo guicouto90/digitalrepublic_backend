@@ -7,7 +7,7 @@ transferRouter.get('/', listAllTransfers);
 
 transferRouter.get('/:id', listTransferById)
 
-transferRouter.get('/receipt/:accountNumber', listTransfersByAccount);
+transferRouter.get('/receipts/:accountNumber', listTransfersByAccount);
 
 transferRouter.post('/:accountNumber', newTransfer);
 
