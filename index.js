@@ -14,6 +14,10 @@ app.use('/transfers', transferRouter);
 
 app.use('/deposits', depositsRouter)
 
+app.get('/', (req, res) => {
+  return res.status(200).send('<h2>Welcome, please access the endpoints "/accounts", "/transfers" or "/deposits"</h2>')
+})
+
 app.use(errorHandler);
 
 app.listen(PORT, ()=> console.log(`${PORT} working properly`));
