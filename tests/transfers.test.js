@@ -440,11 +440,9 @@ describe('GET /transfers/:id', () => {
         value: 500
       });
       response = await chai.request(server).get(`/transfers/${insertedId}`)
-      console.log(ObjectId.isValid(insertedId));
     });
 
     it('Return status 200', () => {
-      console.log(response.body)
       expect(response).to.have.status(200);
     });
 

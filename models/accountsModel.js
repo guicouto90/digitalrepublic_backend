@@ -36,10 +36,25 @@ const updateBalance = async(accountNumber, balance) => {
   )
 };
 
+const updateAccountByName = async(accountNumber, name) => {
+  const connect = await connection();
+  await connect.collection('accounts').updateOne(
+    { accountNumber },
+    { $set: { name } },
+  )
+};
+
+const deleteAccount = async(accountNumber) => {
+  const connect = await connection();
+  await connect.collection('accounts').deleteOne({ accountNumber });
+}
+
 module.exports = {
   findAllAccounts,
   createAccount,
   findByCpf,
   findByAccount,
   updateBalance,
+  updateAccountByName,
+  deleteAccount,
 }
