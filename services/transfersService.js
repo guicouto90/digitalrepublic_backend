@@ -51,6 +51,8 @@ const validateTransfer = async(sourceAccount, destinationAccount, value) => {
 };
 
 const transferMoney = async(sourceAccount, destinationAccount, value) => {
+  validateTransferSchema(sourceAccount, destinationAccount, value);
+  await validateTransfer(sourceAccount, destinationAccount, value);
   const fromBalance = await findByAccount(sourceAccount);
   const newBalanceFrom = fromBalance.balance - value;
   await updateBalance(sourceAccount, newBalanceFrom);
@@ -79,6 +81,7 @@ const validateId = (id) => {
 }
 
 const getTransferById = async(id) => {
+  validateId(id);
   const result = await findByTransferId(id);
   if(!result) {
     const error = { status: 404, message: 'Transfer not found' };
@@ -110,10 +113,3 @@ module.exports = {
   getTransferByAccountNum
 }
 
-
-/*
-  THINGS TO DO:
-  - Funcao extrato bancario,
-  - endpoint com transferencias especificas com id,
-  - transferencias especificas com numero de conta
-*/

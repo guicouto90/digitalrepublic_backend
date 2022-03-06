@@ -374,6 +374,7 @@ describe('GET /accounts', () => {
     before(async ()=> {
       const accountsCollection = connectionMock.db('DigitalRepublic').collection('accounts');
       await accountsCollection.insertOne({
+        _id: '61fa7bca84d4fdd258c832eg',
         accountNumber: 12356,
         fullName: 'Roberto da Silva',
         cpf: 12345678910,

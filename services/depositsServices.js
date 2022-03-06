@@ -33,6 +33,8 @@ const validateAccount = async(destinationAccount) => {
 };
 
 const depositMoney = async(destinationAccount, value) => {
+  validateDepositSchema(destinationAccount, value);
+  await validateAccount(destinationAccount);
   const { balance } = await findByAccount(destinationAccount);
   const newBalance = balance + value;
   await updateBalance(destinationAccount, newBalance);
@@ -52,6 +54,7 @@ const getAllDeposits = async () => {
 };
 
 const getDepositsByAccountNum = async(destinationAccount) => {
+  await validateAccount(destinationAccount);
   const result = await findDepositByAccountNum(destinationAccount);
 
   return result;

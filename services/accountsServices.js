@@ -39,6 +39,8 @@ const verifyCpf = async(cpf) => {
 };
 
 const newAccount = async(name, lastName, cpf, initialDeposit) => {
+  validateAccountData(name, lastName, cpf, initialDeposit);
+  await verifyCpf(cpf);
   const fullName = name.concat(' ', lastName);
   const accountNumber = Math.floor(Math.random() * 100000);
   const accountId = await createAccount(fullName, cpf, accountNumber, initialDeposit);
@@ -68,18 +70,20 @@ const validEdit = (body) => {
   if(cpf) {
     const error1 = { status: 409, message: 'Cannot edit cpf'}
     throw error1
-  };
+  }
 
   if(initialDeposit) {
     const error1 = { status: 409, message: 'Cannot edit initialDeposit'}
     throw error1;
-  };
+  }
 
   if(error) throw error;
 };
 
 const editAccount = async(body, accountNumber) => {
   const { name, lastName } = body;
+  await getAccount(accountNumber);
+  validEdit(body);
   const fullName = name.concat(' ', lastName);
   await updateAccountByName(accountNumber, fullName);
   const editedAccount = {
@@ -90,11 +94,12 @@ const editAccount = async(body, accountNumber) => {
 };
 
 const validDelete = async(accountNumber) => {
+  await getAccount(accountNumber);
   const { balance } = await findByAccount(accountNumber);
   if(balance !== 0) {
     const error = { status: 422, message: 'To delete an account, the balance has to be 0'}
     throw error;
-  };
+  }
   await deleteAccount(accountNumber);
   const message = { message: 'Account deleted succesfully'}
   return message;

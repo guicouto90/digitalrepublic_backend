@@ -1,11 +1,8 @@
-const { validateDepositSchema, validateAccount, depositMoney, getAllDeposits, getDepositsByAccountNum } = require("../services/depositsServices");
+const { depositMoney, getAllDeposits, getDepositsByAccountNum } = require("../services/depositsServices");
 
 const newDeposit = async(req, res, next) => {
   try {
-    const { destinationAccount, value } = req.body;
-    validateDepositSchema(destinationAccount, value);
-    await validateAccount(destinationAccount);
-    
+    const { destinationAccount, value } = req.body;    
     const deposit = await depositMoney(destinationAccount, value);
 
     return res.status(201).json(deposit);
@@ -29,8 +26,6 @@ const listAllDeposits = async(req, res, next) => {
 const listDepositsByAccountNum = async(req, res, next) => {
   try {
     const { accountNumber } = req.params;
-    await validateAccount(Number(accountNumber));
-
     const deposits = await getDepositsByAccountNum(Number(accountNumber));
 
     return res.status(200).json(deposits);
